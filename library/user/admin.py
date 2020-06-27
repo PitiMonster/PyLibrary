@@ -1,5 +1,4 @@
 from django.contrib import admin
 
-from .views import User
+from .models import User
 
-admin.register(User)

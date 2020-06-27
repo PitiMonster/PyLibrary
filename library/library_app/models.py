@@ -1,23 +1,25 @@
 from django.db import models
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up
-from user.views import User
+from user.models import User
 from datetime import timedelta, datetime
 
 # executes when new user signed up
-@receiver(user_signed_up)
-def after_user_signed_up(request, user, **kwargs):
-    pass
+# @receiver(user_signed_up)
+# def after_user_signed_up(request, user, **kwargs):
+#     pass
 
 class Book(models.Model):
-    title = models.TextField(max_length=75)
-    author = models.TextField(max_length=50)
+    title = models.CharField(max_length=75)
+    author = models.CharField(max_length=50)
     release_date = models.DateField()
     description = models.TextField(max_length=500)
     # categories divided by commas
-    category = models.TextField(max_length=100)
+    category = models.CharField(max_length=100)
+    available = models.DecimalField(max_digits=5, decimal_places=0)
+    borrowed = models.DecimalField(max_digits=5, decimal_places=0, default=0) 
 
-    is_borrowed = models.BooleanField(default=False)
+    
 
     def __str__(self):
         return f"\"{self.title}\" by {self.author}."

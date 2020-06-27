@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from user.views import User as MyUser
+from user.models import User as MyUser
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
