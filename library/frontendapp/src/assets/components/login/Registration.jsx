@@ -1,27 +1,26 @@
 import React from "react";
-import loginImg from "../../login.svg";
-// import { register } from "../../serviceWorker";
+import loginImg from "../../../login.svg";
+import CONFIG from '../../config'
 
 export class Register extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            credentials: {username: '', email: '', password1: '', password2: ''}
+            credentials: {
+                username: '',
+                email: '',
+                password1: '',
+                password2: ''
+            }
         }
     }
 
     register = event => {
-        fetch('http://127.0.0.1:8000/custom_auth/sign-up/', {
+        fetch(CONFIG.server+'/custom_auth/sign-up/', { 
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.state.credentials)
-        })
-        .then( data => data.json())
-        .then(
-            data => {
-                console.log(data);
-            }
-        ).catch(error => console.error(error))
+        }).catch(error => console.error(error))
     }
 
     inputChanged = event => {

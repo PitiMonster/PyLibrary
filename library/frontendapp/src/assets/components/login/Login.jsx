@@ -1,27 +1,43 @@
 import React from "react";
-import loginImg from "../../login.svg";
+import loginImg from "../../../login.svg";
+import CONFIG from '../../config'
+import store from 'store';
+import isLoggedIn from '../../helpers/is_logged_in'
 
 export class Login extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            credentials: {username: '', password: ''}
+            credentials: {username: '', password: ''}, 
+            error: false, 
         }
     }
 
     login = event => {
-        fetch('http://127.0.0.1:8000/custom_auth/sign-in/', {
+
+        const { history } = this.props; 
+        store.set('loggedIn', false);
+        fetch(CONFIG.server+'/custom_auth/sign-in/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.state.credentials)
         })
-        .then( data => data.json())
-        .then(
-            data => {
-                console.log(data);
-            }
+        .then(data => {
+            if(!data.ok) { throw data } // if got any exception from server 
+            data.json()
+        }
         )
-        .catch(error => console.error(error))
+        .then(
+            (data) =>
+            {
+                store.set('loggedIn',true); // this user is loggedIn 
+                history.push('/logged'); // redirect to /logged 
+            })
+        .catch(
+        (error) => {
+            this.setState({ error: true });
+            console.log(error);
+        });
     }
 
     onChange = event => {
@@ -31,6 +47,16 @@ export class Login extends React.Component {
     }
 
     render(){
+        const err = this.state.error;
+        let error_message; 
+        if (err) { 
+            error_message = <div className="error-message">Wrong username/password!</div>
+        } else {
+            error_message = <div></div>
+        }
+        // if (store.get('loggedIn') == true) {
+        //     return <Redirect to="/logged" />
+        // }
         return (
             <div className="base-container">
                 <div className="header">Login</div>
@@ -64,6 +90,7 @@ export class Login extends React.Component {
                 <div className="footer">
                     <button className="btn" type="button" onClick={this.login}>Login</button>
                 </div>
+                {error_message}
             </div>
         );
     }
