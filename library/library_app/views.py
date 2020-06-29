@@ -84,8 +84,6 @@ class ReturnView(APIView):
     def post(self, request):
         '''returning a borrowed book'''
         borrowing_id = int(request.data['borrowing_id'])
-        for borrowing in Borrowing.objects.all():
-            print(borrowing)
         try:
             borrowing = Borrowing.objects.get(pk=borrowing_id)
             if borrowing.client == request.user and delete_borrowing(borrowing): 
@@ -103,9 +101,7 @@ class BorrowedBooksView(APIView):
         ''' get all user's borrowed books'''
         user = request.user
         borrowings = Borrowing.objects.filter(client=user)
-        print(borrowings)
         resp = {'content' : BorrowingSerializer(borrowings,many=True).data}
-        print(resp)
         return Response(resp)
     
 

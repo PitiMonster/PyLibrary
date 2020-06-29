@@ -2,7 +2,7 @@ import React from "react";
 import "./App.scss";
 import {
    Login, Register 
-  } from "./assets/components/login/Index";
+  } from "./assets/components/Auth/Index";
 
 import {
   BrowserRouter as Router,
@@ -17,17 +17,17 @@ function App() {
   // calculate stuff
   return (
     <div className="App">
-      <header className="App-header">
-      <Router>
-        <Switch>
-          <Route path="/logged" component={Home} />
-          <Route path="/login" component={Login} />
-        </Switch>
-      </Router>
-      </header>
+      <div className='App-body'>      
+            <Router>
+              <Switch>
+                <Route path="/home" component={Home} />
+                <Route path="/login" component={Login} />
+                <Route path='/register' component={Register} />
+              </Switch>
+            </Router>
+      </div>
     </div>
   );
 }
 
 export default App;
-
