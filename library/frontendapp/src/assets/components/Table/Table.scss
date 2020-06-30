@@ -1,0 +1,45 @@
+.books {
+    text-align: center;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    // border-collapse: collapse;
+    // border-radius: 12px;
+    // border: 1px solid black;
+    width: 100%;
+    background-color: black;
+}
+
+.books td {
+    // border-radius: 12px;
+    // border: 1px solid black;
+    border-top-color: 1px solid black;
+    // background-color: white;
+    padding: 12px;
+}
+
+.books tr:nth-child(even){
+    background-color: #f2f2f2;
+    border: 1px solid black;
+    border-radius: 10px;
+
+}
+
+.books tr:nth-child(odd){
+    background-color: white;
+}
+
+.books tr:hover {
+    background-color: #ddd;
+    // border: 1px solid black;
+    border-radius: 12px;
+
+}
+
+.books th {
+    padding-top: 12px;
+    // border-radius: 12px;
+    // border: 1px solid black;
+    padding-bottom: 12px;
+    background-color:white;
+    color: black;
+    padding: 10px;
+}

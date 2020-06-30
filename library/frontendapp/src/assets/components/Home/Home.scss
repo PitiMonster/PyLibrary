@@ -1,0 +1,8 @@
+@import '../../../App.scss';
+
+.base-container {
+    .btn-logout {
+        @extend .btn;
+        margin-top: 5em;
+    }
+}

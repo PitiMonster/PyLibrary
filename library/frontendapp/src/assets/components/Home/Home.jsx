@@ -3,6 +3,8 @@ import isLoggedIn from '../../helpers/is_logged_in';
 import { Redirect, Link } from 'react-router-dom';
 import CONFIG from '../../config';
 import store from 'store';
+import Table from '../Table/Table';
+import './Home.scss';
 
 export class Home extends React.Component {
 
@@ -14,7 +16,7 @@ export class Home extends React.Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         const token = store.get('token');
         this.setState({token: token});       
@@ -29,37 +31,11 @@ export class Home extends React.Component {
             return data.json()   
         })
         .then( data => {
-            console.log(data)
             this.setState({books: data.content})
-            console.log(this.state.books)
 
-            // this.mapBooks();
         })
         .catch( error => console.log(error))
       }
-
-    mapBooks = () => {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        {this.state.books.map((book, index) => {
-            console.log(book.title)
-            return <React.Fragment key={index}>
-                <div className="book">{book.title}</div>
-            </React.Fragment>
-        })}
-    }
-
-    // {this.state.visibleCountries.map((country, index) => { 
-    //     return <React.Fragment key = {index}>
-    //         {countryCard({
-    //         imgSrc: country.flag, 
-    //         name: country.name,
-    //         population: country.population,
-    //         buttonText: "View",
-    //         callback: null
-    //     })}
-
-    
-    
 
     handleLogout = event => {
         const { history } = this.props;
@@ -75,17 +51,8 @@ export class Home extends React.Component {
         }
         return (
             <div className="base-container">
-                
-                <button className="btn" onClick={this.handleLogout}>Logout</button>
-
-                {console.log(this.state.data)}
-                {this.state.books.map((book, index) => {
-                    console.log('xdddd')
-                    console.log(book.book.title);
-                    return <React.Fragment key={index}>
-                        <div className="book">{book.book.title}</div>
-                    </React.Fragment>
-                })}
+                <Table books={this.state.books} headers={['Title', 'author', 'return date']}/>
+                <button className="btn-logout" onClick={this.handleLogout}>Logout</button>
             </div>    
         )};
 
