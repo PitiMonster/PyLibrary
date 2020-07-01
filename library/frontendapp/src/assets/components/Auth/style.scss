@@ -4,8 +4,13 @@
 //Login Main Container
 .login {
   width: 27em;
-  height: auto;
-  transition: height 2s;
+  // height: 0em;
+  max-height: auto;
+  // transition: max-height 10s ease-in-out;
+  // height: auto;
+  // transition: height 2s;
+  // transform: scaleY(1);
+  // transform-origin: top;
   background-color: white;
   //min-height: 44em;
   display: flex;
@@ -91,6 +96,12 @@
         }
       }
     }
+
+    // &:hover {
+    //   background-color: red;
+    //   max-height: 0em;
+    //   transition: max-height 0.25s ease-in-out;
+    // }
   
     .footer {
       .button-inline{
@@ -116,5 +127,10 @@
       color: white;
     }
   }
-
+  // &: {
+  //   transform: scaleY(0);
+  //   // background-color: red;
+  //   // max-height: 0px;
+  //   // transition: max-height 10s ease-in-out;
+  // }
 }

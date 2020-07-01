@@ -1,4 +1,4 @@
-# from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from user.models import User
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
@@ -14,10 +14,13 @@ from .utils import create_borrowing, delete_borrowing
 class BookView(APIView):
     permission_classes=[AllowAny, ]
 
-    def get(self, request):
-        book_id = int(request.data['book_id'])
-        book = Book.objects.get(pk=book_id)
-        resp = {'content': BookSerializer(book).data}
+    def get(self, request, book_id=0):
+        if book_id == 0:
+            books = Book.objects.all()
+            resp = {'content': BookSerializer(books, many=True).data}
+        else:
+            book = get_object_or_404(Book, pk=book_id)
+            resp = {'content': BookSerializer(book).data}
         return Response(resp)
 
     def post(self, request):
@@ -54,7 +57,7 @@ class BorrowView(APIView):
 
         elif req_type == 'extend_termin':
             book_id = int(request.data['book_id'])
-            book = Book.objects.get(pk=book_id)
+            book = get_object_or_404(Book, pk=book_id)
             client = request.user
             days_num = int(request.data['days_num'])
 
@@ -85,7 +88,7 @@ class ReturnView(APIView):
         '''returning a borrowed book'''
         borrowing_id = int(request.data['borrowing_id'])
         try:
-            borrowing = Borrowing.objects.get(pk=borrowing_id)
+            borrowing = get_object_or_404(Borrowing, pk=borrowing_id)
             if borrowing.client == request.user and delete_borrowing(borrowing): 
                 return Response({'content': True})
             else:
@@ -101,7 +104,7 @@ class BorrowedBooksView(APIView):
         ''' get all user's borrowed books'''
         user = request.user
         borrowings = Borrowing.objects.filter(client=user)
-        resp = {'content' : BorrowingSerializer(borrowings,many=True).data}
+        resp = {'content' : BorrowingSerializer(borrowings, many=True).data}
         return Response(resp)
     
 

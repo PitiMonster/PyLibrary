@@ -13,13 +13,17 @@ export class Home extends React.Component {
         this.state = {
             books: [],
             token: null,
+            history: null,
         }
     }
 
     componentDidMount() {
 
         const token = store.get('token');
-        this.setState({token: token});       
+        this.setState({token: token});   
+        
+        const { history } = this.props;
+        this.setState({history: history})
         
         fetch(CONFIG.server+'/library/borrowed/', {
             method: 'GET',
@@ -37,11 +41,10 @@ export class Home extends React.Component {
         .catch( error => console.log(error))
       }
 
-    handleLogout = event => {
-        const { history } = this.props;
+    handleLogout = event => {  
         store.remove('loggedIn');
         store.remove('token');
-        history.push('/login');
+        this.state.history.push('/login');
     };
 
 
@@ -51,7 +54,7 @@ export class Home extends React.Component {
         }
         return (
             <div className="base-container">
-                <Table books={this.state.books} headers={['Title', 'author', 'return date']}/>
+                <Table books={this.state.books} headers={['Title', 'author', 'return date']} history={this.state.history}/>
                 <button className="btn-logout" onClick={this.handleLogout}>Logout</button>
             </div>    
         )};
