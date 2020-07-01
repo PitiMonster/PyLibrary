@@ -56,13 +56,12 @@ class BorrowView(APIView):
             return Response({'content': True})
 
         elif req_type == 'extend_termin':
-            book_id = int(request.data['book_id'])
-            book = get_object_or_404(Book, pk=book_id)
             client = request.user
             days_num = int(request.data['days_num'])
+            borrowing_id = int(request.data['borrowing_id'])
 
             try:
-                borrowing = Borrowing.objects.get(book=book, client=client)
+                borrowing = Borrowing.objects.get(pk=borrowing_id)
             except Borrowing.DoesNotExist:
                 return Response({'Content': 'Borrowing does not exist'})
             
@@ -78,6 +77,7 @@ class BorrowView(APIView):
             return Response({'content': False})
         else:
             return Response({'content': True})
+
 
 
 
@@ -100,13 +100,19 @@ class ReturnView(APIView):
 class BorrowedBooksView(APIView):
     permission_classes=[IsAuthenticated, ]
 
-    def get(self, request):
+    def get(self, request, borrowing_id=0):
         ''' get all user's borrowed books'''
         user = request.user
-        borrowings = Borrowing.objects.filter(client=user)
-        resp = {'content' : BorrowingSerializer(borrowings, many=True).data}
-        return Response(resp)
-    
+        if borrowing_id == 0:
+            borrowings = Borrowing.objects.filter(client=user)
+            resp = {'content' : BorrowingSerializer(borrowings, many=True).data}
+            return Response(resp)
+        else: 
+            borrowing = Borrowing.objects.get(client=user, pk=borrowing_id)
+            print(borrowing)
+            resp = {'content' : BorrowingSerializer(borrowing).data}
+            return Response(resp)
+        
 
 class SearchView(APIView):
     permission_classes = [AllowAny, ]

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Table.scss';
-import { Link } from 'react-router-dom'
 
 export default class Table extends React.Component {
     
@@ -15,7 +14,7 @@ export default class Table extends React.Component {
         const history  = this.props.history;
         return this.props.books.map((book, index) => {
             return (
-            <tr key={ index } onClick={() => {history.push('book/'+book.book.id)}}>
+            <tr key={ index } onClick={() => {history.push('/home/borrowings/'+book.id)}}>
                         <td>{book.book.title}</td>
                         <td>{book.book.author}</td>
                         <td>{book.returning_date}</td>

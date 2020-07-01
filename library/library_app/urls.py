@@ -8,4 +8,6 @@ urlpatterns=[
     re_path(r'return/$', views.ReturnView.as_view()),
     re_path(r'borrowed/$', views.BorrowedBooksView.as_view()), #TODO: change it 
     re_path(r'search/$', views.SearchView.as_view()),
+    re_path(r'borrowing/(?P<borrowing_id>\d+)/', views.BorrowedBooksView.as_view()),
+
 ]
