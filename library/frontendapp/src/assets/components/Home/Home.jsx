@@ -2,12 +2,14 @@ import React from 'react';
 import isLoggedIn from '../../helpers/is_logged_in';
 import { Redirect, Route, Link } from 'react-router-dom';
 import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
+// import 'semantic-ui-css/semantic.min.css'
 import CONFIG from '../../config';
 import store from 'store';
 import Table from '../Table/Table';
 import './Home.scss';
 import BorrowingInfo from '../BookInfo/BorrowingInfo'
+// import Sidebar from '../Sidebar/Sidebar'
+
 export class Home extends React.Component {
 
     constructor(props) {
@@ -71,7 +73,11 @@ export class Home extends React.Component {
                 <Table books={this.state.books} headers={['Title', 'author', 'return date']} history={this.state.history}/>
                 <button className="btn-logout" onClick={this.handleLogout}>Logout</button>
                 <Route path="/home/borrowings/:borrwingId" component={BorrowingInfo} />
+                <Route path="/home/sidebar" component={Sidebar} />
 
+                {/* TODO MAKE IT WORKING */}
+                <img src={`./assets/static/def_book.jpg`} alt=""/> 
+      
             </div>    
         )};
 
