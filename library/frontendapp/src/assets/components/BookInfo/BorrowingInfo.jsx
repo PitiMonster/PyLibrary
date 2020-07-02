@@ -77,7 +77,7 @@ export default class BorrowingInfo extends React.Component {
         const { book } = this.state; 
         const { expiration_date } = this.state; 
         return (
-            <Modal open dimmer="blurring">
+            <Modal open >
 
               <Modal.Header>{book.title}</Modal.Header>
               <Modal.Content image>
@@ -90,7 +90,7 @@ export default class BorrowingInfo extends React.Component {
               </Modal.Content>
               <Modal.Actions>
           <Link to="/home"><Button>Close</Button></Link>
-          <Button positive onClick={this.extendBorrowing}>Extend for one week</Button>
+          <Button color="blue" onClick={this.extendBorrowing}>Extend for one week</Button>
         </Modal.Actions>
             </Modal>
           );

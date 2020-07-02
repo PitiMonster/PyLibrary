@@ -3,7 +3,7 @@ import "./App.scss";
 import {
    Login, Register 
   } from "./assets/components/Auth/Index";
-
+import store from 'store'
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,7 +20,6 @@ function App() {
       <div className='App-body'>      
             <Router>
               <Switch>
-                
                 <Route path="/home" component={Home} />
                 <Route path="/login" component={Login} />
                 <Route path='/register' component={Register} />
