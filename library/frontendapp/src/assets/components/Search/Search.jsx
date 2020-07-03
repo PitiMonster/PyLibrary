@@ -24,27 +24,14 @@ export default class Search extends React.Component {
             token: store.get('token'),
             history: null,
             key: '',
-            type: 'title',
+            type: 'all',
             column: null,
             direction: null, 
         }
     }
 
     compareBy(key) {
-        // if (key === 'book.title')
-        //     return function (a, b) {
-
-        //     if (a.title.toLowerCase()<b.title.toLowerCase()) return -1;
-        //     if (a.title.toLowerCase()>b.title.toLowerCase()) return 1;
-        //     return 0;
-        //     }
-        // else if (key === 'book.author')
-        //     return function (a, b) {
-
-        //         if (a.author.toLowerCase()<b.author.toLowerCase()) return -1;
-        //         if (a.author.toLowerCase()>b.author.toLowerCase()) return 1;
-        //         return 0;
-        //     }
+       
         return function(a, b) {
             if (a[key].toLowerCase()<(b[key].toLowerCase())) return -1;
             if (a[key].toLowerCase()>(b[key].toLowerCase())) return 1;
@@ -77,6 +64,7 @@ export default class Search extends React.Component {
     componentDidMount(){
         const { history } = this.props;
         this.setState({history: history});
+        this.handleSearch();
     }
 
     handleSearch = event => {
@@ -117,7 +105,7 @@ export default class Search extends React.Component {
                                 value={this.state.key}
                                 onChange={this.handleInputChange}
                                 />
-                        <Select compact options={options} defaultValue='title' onChange={(e, { value }) => {this.setState({type: value})}} />
+                        <Select options={options} defaultValue='all' onChange={(e, { value }) => {this.setState({type: value})}} />
 
                     </Form.Input>
                 </Form>
@@ -156,7 +144,7 @@ export default class Search extends React.Component {
                                     <Table.Cell> {book.title}</Table.Cell>
                                     <Table.Cell >{book.author}</Table.Cell>
                                     <Table.Cell >{book.category}</Table.Cell>
-                                    <Table.Cell selectable textAlign='center'> <a href={`/home/borrowings/${book.id}`}> {/* TODO change href on /home/books/ */}
+                                    <Table.Cell selectable textAlign='center'> <a href={`/home/borrowings/${book.id}`}> {/* TODO change href to /home/books/ */}
                                         <Icon name="info circle" color="blue"/>
                                     </a></Table.Cell>
                                 </Table.Row>
@@ -167,14 +155,6 @@ export default class Search extends React.Component {
                 </div>
             </div>
             
-            // <Form onSubmit={this.handleFormSubmit}>
-            //     <Form.Input  placeholder='Search...' value={this.state.query} onChange={this.handleSearch} />
-            // </Form>
-            // <Input type='text' placeholder='Search...' action>
-            //     <input />
-            //     
-            //     <Button type='submit' onClick={this.handleSearch}>Search</Button>
-            // </Input>
         )
     }
 }

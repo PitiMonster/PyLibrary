@@ -1,11 +1,13 @@
+# external imports
 from django.shortcuts import get_object_or_404
 from user.models import User
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models import Q
 
 
-#own imports 
+# internal imports 
 from .models import Book, Borrowing
 from .serializers import BookSerializer, BorrowingSerializer
 from .utils import create_borrowing, delete_borrowing
@@ -126,7 +128,9 @@ class SearchView(APIView):
         if type == 'title':
             found_books = Book.objects.filter(title__icontains=key)
         elif type == 'author':
-            found_books = Book.objects.filter(author__icontains=key) 
+            found_books = Book.objects.filter(author__icontains=key)
+        elif type == 'all':
+            found_books = Book.objects.filter(Q(title__icontains=key) | Q(author__icontains=key))
         resp = {'content' : BookSerializer(found_books, many=True).data}
         return Response(resp)
         
