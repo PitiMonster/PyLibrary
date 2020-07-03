@@ -103,11 +103,14 @@ class BorrowedBooksView(APIView):
     def get(self, request, borrowing_id=0):
         ''' get all user's borrowed books'''
         user = request.user
-        if borrowing_id == 0:
+        print(user)
+        print(borrowing_id)
+        if int(borrowing_id) == 0:
+            print(user)
             borrowings = Borrowing.objects.filter(client=user)
             resp = {'content' : BorrowingSerializer(borrowings, many=True).data}
             return Response(resp)
-        else: 
+        else:
             borrowing = Borrowing.objects.get(client=user, pk=borrowing_id)
             print(borrowing)
             resp = {'content' : BorrowingSerializer(borrowing).data}

@@ -1,8 +1,11 @@
+// external imports
 import React from 'react';
 import { Button, Image, Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import store from 'store';
+
+// internal imports
 import CONFIG from '../../config'
-import store from 'store'; 
 
 export default class BorrowingInfo extends React.Component {
 
@@ -44,6 +47,7 @@ export default class BorrowingInfo extends React.Component {
                     author: data.content.book.author,
                     description: data.content.book.description,
                     category: data.content.book.category,
+                    photo: data.content.book.photo,
                 },
                 expiration_date: data.content.returning_date,
                 borrowingId: data.content.id, 
@@ -81,6 +85,7 @@ export default class BorrowingInfo extends React.Component {
 
               <Modal.Header>{book.title}</Modal.Header>
               <Modal.Content image>
+                <Image wrapped size="small" src={`${CONFIG.server}${book.photo}`} />
                 <Modal.Description>
                   <p>Author: {book.author}</p>
                   <p>Description: {book.description}</p>

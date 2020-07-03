@@ -1,8 +1,11 @@
+// external imports
 import React from "react";
-import loginImg from "../../../../library.png";
-import CONFIG from '../../../config'
 import store from 'store';
 import { Link } from 'react-router-dom'
+
+// internal imports
+import loginImg from "../../../../library.png";
+import CONFIG from '../../../config'
 import isLoggedIn from '../../../helpers/is_logged_in'
 
 export class Login extends React.Component {

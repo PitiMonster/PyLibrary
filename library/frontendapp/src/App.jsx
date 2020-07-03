@@ -1,8 +1,5 @@
+// external imports
 import React from "react";
-import "./App.scss";
-import {
-   Login, Register 
-  } from "./assets/components/Auth/Index";
 import store from 'store'
 import {
   BrowserRouter as Router,
@@ -11,7 +8,13 @@ import {
   Link
 } from "react-router-dom";
 
+// internal imports
+import "./App.scss";
 import {Home} from './assets/components/Home/Home'
+import {
+        Login, Register
+    } from "./assets/components/Auth/Index";
+
 
 function App() {
   // calculate stuff

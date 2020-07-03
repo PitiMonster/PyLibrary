@@ -1,7 +1,10 @@
+// external imports
 import React from "react";
+import { Link } from 'react-router-dom'
+
+// internal imports
 import loginImg from "../../../../library.png";
 import CONFIG from '../../../config'
-import { Link } from 'react-router-dom'
 
 export class Register extends React.Component {
     constructor(props){

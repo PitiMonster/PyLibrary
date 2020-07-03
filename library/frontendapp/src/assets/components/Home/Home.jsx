@@ -1,17 +1,16 @@
+// external imports
 import React from 'react';
 import _ from 'lodash';
-
-import isLoggedIn from '../../helpers/is_logged_in';
 import { Redirect, Route, Link } from 'react-router-dom';
 import { Table, Icon, Menu,  Sidebar, Header } from 'semantic-ui-react'
-// import 'semantic-ui-css/semantic.min.css'
-import CONFIG from '../../config';
 import store from 'store';
-// import Table from '../Table/Table';
+
+// internal imports
 import './Home.scss';
+import isLoggedIn from '../../helpers/is_logged_in';
+import CONFIG from '../../config';
 import BorrowingInfo from '../BookInfo/BorrowingInfo'
 
-// import Sidebar from '../Sidebar/Sidebar'
 
 export class Home extends React.Component {
 
@@ -85,7 +84,7 @@ export class Home extends React.Component {
         const { history } = this.props;
         this.setState({history: history})
         
-        fetch(CONFIG.server+'/library/borrowed/', {
+        fetch(CONFIG.server+'/library/borrowing/all/', {
             method: 'GET',
             headers: {'Content-Type': 'application/json',
                         'Authorization': 'Token ' + token},
@@ -95,7 +94,13 @@ export class Home extends React.Component {
             return data.json()   
         })
         .then( data => {
+            console.log(data);
+            
             this.setState({books: data.content})
+            console.log(data.content);
+            console.log(this.state.books);
+            
+            
 
         })
         .catch( error => console.log(error))
@@ -188,11 +193,6 @@ export class Home extends React.Component {
                 </Table>
                 </div>
                 <Route path="/home/borrowings/:borrwingId" component={BorrowingInfo} />
-                <Route path="/home/sidebar" component={Sidebar} />
-
-                {/* TODO MAKE IT WORKING */}
-                <img src={`./assets/static/def_book.jpg`} alt=""/> 
-      
             </div>
         )};
 

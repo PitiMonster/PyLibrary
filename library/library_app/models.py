@@ -4,10 +4,6 @@ from allauth.account.signals import user_signed_up
 from user.models import User
 from datetime import timedelta, datetime
 
-# executes when new user signed up
-# @receiver(user_signed_up)
-# def after_user_signed_up(request, user, **kwargs):
-#     pass
 
 def upload_location(instance, filename, **kwargs):
     file_path = f'library_app/images/{instance.title}-{instance.author}/{filename}'
@@ -18,7 +14,7 @@ class Book(models.Model):
     author = models.CharField(max_length=50)
     release_date = models.DateField()
     description = models.TextField(max_length=500)
-    photo = models.ImageField(upload_to=upload_location, default='/assets/static/def_book.jpg')
+    photo = models.ImageField(upload_to=upload_location, default='/assets/media_cdn/library_app/images/def_book.jpg')
     # categories divided by commas
     category = models.CharField(max_length=100)
     available = models.DecimalField(max_digits=5, decimal_places=0)
