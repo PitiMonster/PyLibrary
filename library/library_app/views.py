@@ -68,7 +68,7 @@ class BorrowView(APIView):
             borrowing.extend_returning_date(days_num)
             return Response({'content': True})
     
-    def get(self, request): 
+    def get(self, request):
         '''if book is available return True else False'''
         title = request.data['title']
         author = request.data['author']
@@ -120,10 +120,9 @@ class BorrowedBooksView(APIView):
 class SearchView(APIView):
     permission_classes = [AllowAny, ]
 
-    def get(self, request):
+    def get(self, request, type='title', key=''):
         ''' search books in library '''
-        type = request.data['type'] 
-        key = request.data['key']
+
         if type == 'title':
             found_books = Book.objects.filter(title__icontains=key)
         elif type == 'author':

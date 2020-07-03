@@ -111,6 +111,10 @@ export class Home extends React.Component {
         this.state.history.push('/login');
     };
 
+    handleSearch = () => {
+        this.state.history.push('/search');
+    }
+
     setVisible = (visible) => {
         this.setState({visible : visible})
     }
@@ -133,7 +137,7 @@ export class Home extends React.Component {
             <Route
             path="/home" 
             render={() => (
-                <Link to="/home">
+                <Link to="/search">
                 <Menu.Item link name="search" >
                     <Icon name="search" color="blue"/>
                     Search
@@ -178,7 +182,7 @@ export class Home extends React.Component {
                     <Table.Body>
                         {books.map((book, index) => 
                          (
-                            <Table.Row  key={book.book.title}>
+                            <Table.Row  key={index}>
                                 
                                 <Table.Cell> {book.book.title}</Table.Cell>
                                 <Table.Cell >{book.book.author}</Table.Cell>

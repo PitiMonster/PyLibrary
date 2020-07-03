@@ -14,6 +14,7 @@ import {Home} from './assets/components/Home/Home'
 import {
         Login, Register
     } from "./assets/components/Auth/Index";
+import Search from './assets/components/Search/Search'
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/home" component={Home} />
                 <Route path="/login" component={Login} />
                 <Route path='/register' component={Register} />
+                <Route path='/search' component={Search} />
               </Switch>
             </Router>
       </div>
