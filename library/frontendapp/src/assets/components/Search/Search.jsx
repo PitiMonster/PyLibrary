@@ -26,7 +26,9 @@ export default class Search extends React.Component {
             key: '',
             type: 'all',
             column: null,
-            direction: null, 
+            direction: null,
+            start: 0,   // beginning of the number of books range
+            end: 10,     // end of the number of books range, e.g.: <start, end)
         }
     }
 
@@ -69,9 +71,9 @@ export default class Search extends React.Component {
 
     handleSearch = event => {
 
-        const { type, key } = this.state;
+        const { type, key, start, end } = this.state;
 
-        fetch(`${CONFIG.server}/library/search/${type}/${key}/`, {
+        fetch(`${CONFIG.server}/library/search/${start}/${end}/${type}/${key}/`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
         })

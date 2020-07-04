@@ -16,16 +16,19 @@ from .utils import create_borrowing, delete_borrowing
 class BookView(APIView):
     permission_classes=[AllowAny, ]
 
-    def get(self, request, book_id=0):
+    def get(self, request, start=0, end=0, book_id=0):
+
+        start, end, book_id = int(start), int(end), int(book_id)
+
         if book_id == 0:
-            books = Book.objects.all()
+            books = Book.objects.all()[start:end]
             resp = {'content': BookSerializer(books, many=True).data}
         else:
             book = get_object_or_404(Book, pk=book_id)
             resp = {'content': BookSerializer(book).data}
         return Response(resp)
 
-    def post(self, request):
+    def post(self, request, start=0, end=0, book_id=0):
         title = request.data['title']
         author = request.data['author']
         release_date = request.data['release_date']
@@ -102,14 +105,14 @@ class ReturnView(APIView):
 class BorrowedBooksView(APIView):
     permission_classes=[IsAuthenticated, ]
 
-    def get(self, request, borrowing_id=0):
-        ''' get all user's borrowed books'''
+    def get(self, request, start=0, end=0, borrowing_id=0):
+        ''' get user's borrowings in range <start, end)'''
+
+        start, end = int(start), int(end)
+
         user = request.user
-        print(user)
-        print(borrowing_id)
         if int(borrowing_id) == 0:
-            print(user)
-            borrowings = Borrowing.objects.filter(client=user)
+            borrowings = Borrowing.objects.filter(client=user)[start:end]
             resp = {'content' : BorrowingSerializer(borrowings, many=True).data}
             return Response(resp)
         else:
@@ -122,15 +125,17 @@ class BorrowedBooksView(APIView):
 class SearchView(APIView):
     permission_classes = [AllowAny, ]
 
-    def get(self, request, type='title', key=''):
+    def get(self, request, start=0, end=0, type='title', key=''):
         ''' search books in library '''
 
+        start, end = int(start), int(end)
+
         if type == 'title':
-            found_books = Book.objects.filter(title__icontains=key)
+            found_books = Book.objects.filter(title__icontains=key)[start:end]
         elif type == 'author':
-            found_books = Book.objects.filter(author__icontains=key)
+            found_books = Book.objects.filter(author__icontains=key)[start:end]
         elif type == 'all':
-            found_books = Book.objects.filter(Q(title__icontains=key) | Q(author__icontains=key))
+            found_books = Book.objects.filter(Q(title__icontains=key) | Q(author__icontains=key))[start:end]
         resp = {'content' : BookSerializer(found_books, many=True).data}
         return Response(resp)
         

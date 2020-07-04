@@ -20,7 +20,7 @@ export class Register extends React.Component {
         }
     }
 
-    register = event => {
+    register = () => {
 
         const { history } = this.props;
 
@@ -36,9 +36,7 @@ export class Register extends React.Component {
             }
             history.push('/login') // redirect to login page after successful register
         })
-        .catch(error => {
-            console.log("aaaaaaa");
-            
+        .catch(error => {            
             this.setState({error: true})
             console.error(error)
         })
@@ -54,8 +52,12 @@ export class Register extends React.Component {
         const err = this.state.error;
     }
 
+    handleOnSubmit = e => {
+        e.preventDefault();
+        this.register();
+    }
+
     render(){
-        console.log(this.state.error)
         const err = this.state.error
         let error_message
         if (err) {
@@ -67,75 +69,75 @@ export class Register extends React.Component {
 
 
         return (
-            <div className="login">
-                <div className="base-container">
-                    <div className="register">
-                        <div className="header">Register</div>
-                        <div className="content">
-                            <div className="image">
-                                <img src={loginImg} alt=""/>
+            <form onSubmit={this.handleOnSubmit}>
+                <div className="login">
+                    <div className="base-container">
+                        <div className="register">
+                            <div className="header">Register</div>
+                            <div className="content">
+                                <div className="image">
+                                    <img src={loginImg} alt=""/>
+                                </div>
+                                <div className="form">
+                                    <div className="form-group">
+                                        <label htmlFor="username">Username</label>
+                                        <input 
+                                            type="text" 
+                                            name="username" 
+                                            placeholder="Username" 
+                                            value={this.state.credentials.username}
+                                            onChange={this.inputChanged}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="email">Email</label>
+                                        <input 
+                                            type="email" 
+                                            name="email" 
+                                            placeholder="Email" 
+                                            value={this.state.credentials.email}
+                                            onChange={this.inputChanged}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="password1">Password</label>
+                                        <input 
+                                            type="password" 
+                                            name="password1" 
+                                            placeholder="Password" 
+                                            value={this.state.credentials.password1}
+                                            onChange={this.inputChanged}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="password2">Password confirmation</label>
+                                        <input 
+                                            type="password"
+                                            name="password2"
+                                            placeholder="Password" 
+                                            value={this.state.credentials.password2}
+                                            onChange={this.inputChanged}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="form">
-                                <div className="form-group">
-                                    <label htmlFor="username">Username</label>
-                                    <input 
-                                        type="text" 
-                                        name="username" 
-                                        placeholder="Username" 
-                                        value={this.state.credentials.username}
-                                        onChange={this.inputChanged}
-                                    />
+                            <div className="footer"> 
+
+                                <button className="btn" type="submit">Register</button>
+
+                                <div className="sign">
+                                    <div type='text'>Already registered?</div>
+                                    <Link to='/login'>
+                                        <div type='link'>Sign in!</div>
+                                    </Link>
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="email">Email</label>
-                                    <input 
-                                        type="email" 
-                                        name="email" 
-                                        placeholder="Email" 
-                                        value={this.state.credentials.email}
-                                        onChange={this.inputChanged}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="password1">Password</label>
-                                    <input 
-                                        type="password" 
-                                        name="password1" 
-                                        placeholder="Password" 
-                                        value={this.state.credentials.password1}
-                                        onChange={this.inputChanged}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="password2">Password confirmation</label>
-                                    <input 
-                                        type="password"
-                                        name="password2"
-                                        placeholder="Password" 
-                                        value={this.state.credentials.password2}
-                                        onChange={this.inputChanged}
-                                    />
-                                </div>
+                                
+                                {error_message}
                             </div>
-                        </div>
-                        <div className="footer"> 
-                            {/* <button className="button-inline" type="button" onClick={this.register}>Register</button>
-                                <Link to='/login'>
-                                    <button className="button-inline" type="button">Login</button>
-                                </Link> */}
-                            <button className="btn" type="button" onClick={this.register}>Register</button>
-                            <div className="sign">
-                                <div type='text'>Already registered?</div>
-                                <Link to='/login'>
-                                    <div type='link'>Sign in!</div>
-                                </Link>
-                            </div>
-                            
-                            {error_message}
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         );
     }
 }

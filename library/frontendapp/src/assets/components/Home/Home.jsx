@@ -9,7 +9,7 @@ import store from 'store';
 import './Home.scss';
 import isLoggedIn from '../../helpers/is_logged_in';
 import CONFIG from '../../config';
-import BorrowingInfo from '../BookInfo/BorrowingInfo'
+import BorrowingInfo from '../BorrowingInfo/BorrowingInfo'
 
 
 export class Home extends React.Component {
@@ -21,7 +21,9 @@ export class Home extends React.Component {
             token: null,
             history: null,
             column: null,
-            direction: null, 
+            direction: null,
+            start: 0,
+            end: 10,
         }
     }
     compareBy(key) {
@@ -83,8 +85,10 @@ export class Home extends React.Component {
         
         const { history } = this.props;
         this.setState({history: history})
+
+        const { start, end } = this.state;
         
-        fetch(CONFIG.server+'/library/borrowing/all/', {
+        fetch(CONFIG.server+`/library/borrowing/${start}/${end}/all/`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json',
                         'Authorization': 'Token ' + token},

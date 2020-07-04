@@ -17,7 +17,7 @@ export class Login extends React.Component {
         }
     }
 
-    login = event => {
+    login = () => {
 
         const { history } = this.props;
         store.set('loggedIn', false);
@@ -57,6 +57,12 @@ export class Login extends React.Component {
         this.setState({credentials: cred});
     }
 
+    handleOnSubmit = e => {
+        console.log("DDDDD")
+        e.preventDefault();
+        this.login();
+    }
+
     render(){
 
         const err = this.state.error;
@@ -70,54 +76,53 @@ export class Login extends React.Component {
         //     return <Redirect to="/logged" />
         // }
         return (
-            <div className="login">
-                <div className="base-container">
-                    <div className="header">Login</div>
-                    <div className="content">
-                        <div className="image">
-                            <img src={loginImg} alt=""/>
-                        </div>
-                        <div className="form">
-                            <div className="form-group">
-                                <label htmlFor="email">Username</label>
-                                <input
-                                    type="email"
-                                    name="username"
-                                    placeholder="Email"
-                                    value={this.state.credentials.username}
-                                    onChange={this.onChange}
-                                />
+            <form onSubmit={this.handleOnSubmit}>
+                <div className="login">
+                    <div className="base-container">
+                        <div className="header">Login</div>
+                        <div className="content">
+                            <div className="image">
+                                <img src={loginImg} alt=""/>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    value={this.state.credentials.password}
-                                    onChange={this.onChange}
-                                />
+                            <div className="form">
+                                <div className="form-group">
+                                    <label htmlFor="email">Username</label>
+                                    <input
+                                        type="email"
+                                        name="username"
+                                        placeholder="Email"
+                                        value={this.state.credentials.username}
+                                        onChange={this.onChange}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="password">Password</label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        placeholder="Password"
+                                        value={this.state.credentials.password}
+                                        onChange={this.onChange}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="footer">
-                        {/* <button className="button-inline" type="button" onClick={this.login}>Login</button>
-                        <Link to='/register'>
-                            <button className="button-inline" type="button">Register</button>
-                        </Link> */}
-                        <button className="btn" type="button" onClick={this.login}>Login</button>
+                        <div className="footer">
 
-                        <div className="sign">
-                            <div type='text'>Don't have an account?</div>
-                            <Link to='/register'>
-                                <div type='link'>Sign up!</div>
-                            </Link>
+                            <button className="btn" type="submit">Login</button>
+
+                            <div className="sign">
+                                <div type='text'>Don't have an account?</div>
+                                <Link to='/register'>
+                                    <div type='link'>Sign up!</div>
+                                </Link>
+                            </div>
+                            
                         </div>
-                        
+                        {error_message}
                     </div>
-                    {error_message}
                 </div>
-            </div>   
+            </form>
         );
     }
 }
