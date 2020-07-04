@@ -30,7 +30,7 @@ export default class BorrowingInfo extends React.Component {
     componentDidMount() {
         const token = this.state.token;
         const { match : { params }, history } = this.props;
-        fetch(`${CONFIG.server}/library/borrowing/${params.borrwingId}/`, {
+        fetch(`${CONFIG.server}/library/borrowing/0/1/${params.borrwingId}/`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json',
                     'Authorization': 'Token ' + token},

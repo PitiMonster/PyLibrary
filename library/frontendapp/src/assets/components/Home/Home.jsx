@@ -4,12 +4,14 @@ import _ from 'lodash';
 import { Redirect, Route, Link } from 'react-router-dom';
 import { Table, Icon, Menu,  Sidebar, Header } from 'semantic-ui-react'
 import store from 'store';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 // internal imports
 import './Home.scss';
 import isLoggedIn from '../../helpers/is_logged_in';
 import CONFIG from '../../config';
-import BorrowingInfo from '../BorrowingInfo/BorrowingInfo'
+import BorrowingInfo from '../BorrowingInfo/BorrowingInfo';
+import BorrowingView from '../../views/BorrowingView/borrowing';
 
 
 export class Home extends React.Component {
@@ -24,6 +26,7 @@ export class Home extends React.Component {
             direction: null,
             start: 0,
             end: 10,
+            items: [],
         }
     }
     compareBy(key) {
@@ -103,6 +106,7 @@ export class Home extends React.Component {
             this.setState({books: data.content})
             console.log(data.content);
             console.log(this.state.books);
+            this.createItems();
             
             
 
@@ -123,12 +127,30 @@ export class Home extends React.Component {
         this.setState({visible : visible})
     }
 
+    createItems = () => {
+        const { books, history } = this.state;
+
+        const newItems = books.map((book, index) =>
+            <div key={index}>
+                <BorrowingView author={book.book.author} title={book.book.title} photo={book.book.photo} borrowing_id={book.id} history={history} />,
+            </div>,
+            {/* this.setState({items: [...this.state.items, item]}) */}
+        );
+        console.log("XDDDDDDDDDDDDD");
+        this.setState({items: newItems})
+        console.log(newItems)
+        // this.setState({items: newItems})
+
+    }
 
     render() {
         if(!isLoggedIn()) {
             return <Redirect to="/login" />
         }
-        const { books, column, direction } = this.state; 
+        const { books, column, direction, items } = this.state;
+
+        // const xd = <BorrowingView author='xddd' title='xddd' photo='/assets/media/library_app/images/Harry%20Potter%20i%20Kamie%C5%84%20Filozoficzny-J.K.Rowling/def_book.jpg' />
+        // const items = [xd, xd, xd, xd, xd]
         return (
         <div className="base-container">
          <Sidebar as={Menu}  compact visible vertical width="thin" icon="labeled" >
@@ -159,7 +181,7 @@ export class Home extends React.Component {
                     <Icon name='desktop' circular color="blue"/>
                     <Header.Content>Your Library</Header.Content>
                 </Header>
-                <Table sortable selectable celled size='large' color="blue">
+                {/* <Table sortable selectable celled size='large' color="blue">
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell 
@@ -198,9 +220,31 @@ export class Home extends React.Component {
                          ), 
                         )}
                     </Table.Body>
-                </Table>
+                </Table> */}
+                
+                    <InfiniteScroll
+                        dataLength={items.length} //This is important field to render the next data
+                        next={'xd'}
+                        hasMore={true}
+                        loader={<h4>Loading...</h4>}
+                        endMessage={
+                            <p style={{textAlign: 'center'}}>
+                            <b>Yay! You have seen it all</b>
+                            </p>
+                        }
+                        // below props only if you need pull down functionality
+                        // refreshFunction={this.refresh}
+                        // pullDownToRefresh
+                        pullDownToRefreshContent={
+                            <h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>
+                        }
+                        releaseToRefreshContent={
+                            <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
+                        }>
+                        {items}
+                    </InfiniteScroll>
+                    <Route path="/home/borrowings/:borrwingId" component={BorrowingInfo} />
                 </div>
-                <Route path="/home/borrowings/:borrwingId" component={BorrowingInfo} />
             </div>
         )};
 
