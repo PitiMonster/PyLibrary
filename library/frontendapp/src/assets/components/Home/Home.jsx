@@ -25,7 +25,7 @@ export class Home extends React.Component {
             column: null,
             direction: null,
             start: 0,
-            end: 1,
+            end: 10,
             items: [],
             hasMore: true,
         }
@@ -75,6 +75,8 @@ export class Home extends React.Component {
 
 
     componentWillReceiveProps (props) {
+        const { history } = this.props;
+        this.setState({history: history})
         this.getBooks();
     }
 
@@ -139,13 +141,19 @@ export class Home extends React.Component {
 
         const newItems = newBooks.map((book, index) =>
             <div key={index+start}>
-                <BorrowingView author={book.book.author} title={book.book.title} photo={book.book.photo} borrowing_id={book.id} history={history} />,
+                <BorrowingView 
+                author={book.book.author} 
+                title={book.book.title} 
+                photo={book.book.photo} 
+                borrowing_id={book.id}
+                return_date = {book.returning_date}  
+                history={history} />
             </div>,
         );
         console.log("XDDDDDDDDDDDDD");
         this.setState({items: this.state.items.concat(newItems)})
 
-        if (newItems.length < 1) {
+        if (newItems.length < end) {
             this.setState({hasMore: false});
         }
 
@@ -176,32 +184,30 @@ export class Home extends React.Component {
 
         return (
         <div className="base-container">
-         <Sidebar as={Menu}  compact visible vertical width="thin" icon="labeled" >
+         <Menu size='massive' compact icon="labeled" >
             <Link to="/home"> 
             <Menu.Item link name="book">
                 <Icon name="book" color="blue"/>
                 Books
             </Menu.Item>
             </Link>
-            <Route
-            path="/home" 
-            render={() => (
-                <Link to="/search">
-                <Menu.Item link name="search" >
-                    <Icon name="search" color="blue"/>
-                    Search
-                </Menu.Item>
-                </Link>
-            )}
-            />
+            <Link to="/search">
+            <Menu.Item link name="search" >
+                <Icon name="search" color="blue"/>
+                Search
+            </Menu.Item>
+            </Link>
+
             <Menu.Item name="logout" onClick={this.handleLogout}>
             <Icon name="power" color="blue" />
             Logout
             </Menu.Item>
-        </Sidebar>
+        </Menu>
             <div className="table-container">
-                <Header as='h2' icon textAlign='center'>
-                    <Icon name='desktop' circular color="blue"/>
+                <Header as='h1' icon textAlign='center'>
+                    <Icon.Group size='big'>
+                        <Icon size='big' name='desktop' color='blue' circular loading />
+                    </Icon.Group>
                     <Header.Content>Your Library</Header.Content>
                 </Header>
                 {/* <Table sortable selectable celled size='large' color="blue">

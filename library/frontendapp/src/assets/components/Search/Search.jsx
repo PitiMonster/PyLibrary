@@ -112,7 +112,7 @@ export default class Search extends React.Component {
                     </Form.Input>
                 </Form>
                 <div className="table-container">
-                    <Table sortable selectable celled size='large' color="blue">
+                    <Table compact sortable selectable celled size='large' color="blue">
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell 
@@ -155,6 +155,7 @@ export default class Search extends React.Component {
                         </Table.Body>
                     </Table>
                 </div>
+               
             </div>
             
         )
