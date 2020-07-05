@@ -20,13 +20,14 @@ export class Home extends React.Component {
         super(props);
         this.state = {
             books: [],
-            token: null,
+            token: store.get('token'),
             history: null,
             column: null,
             direction: null,
             start: 0,
-            end: 10,
+            end: 1,
             items: [],
+            hasMore: true,
         }
     }
     compareBy(key) {
@@ -79,16 +80,20 @@ export class Home extends React.Component {
 
 
     componentDidMount() {
-        this.getBooks(); 
-      }
 
-    getBooks = () => {
-        const token = store.get('token');
-        this.setState({token: token});   
+        // const token = store.get('token');
+        // this.setState({token: token});   
         
         const { history } = this.props;
         this.setState({history: history})
 
+        this.getBooks(); 
+      }
+
+    getBooks = () => {
+
+        const { token } = this.state;
+        
         const { start, end } = this.state;
         
         fetch(CONFIG.server+`/library/borrowing/${start}/${end}/all/`, {
@@ -103,7 +108,7 @@ export class Home extends React.Component {
         .then( data => {
             console.log(data);
             
-            this.setState({books: data.content})
+            this.setState({books: this.state.books.concat(data.content)})
             console.log(data.content);
             console.log(this.state.books);
             this.createItems();
@@ -128,18 +133,38 @@ export class Home extends React.Component {
     }
 
     createItems = () => {
-        const { books, history } = this.state;
+        const { books, history, start, end } = this.state;
 
-        const newItems = books.map((book, index) =>
-            <div key={index}>
+        const newBooks = books.slice(start, end);
+
+        const newItems = newBooks.map((book, index) =>
+            <div key={index+start}>
                 <BorrowingView author={book.book.author} title={book.book.title} photo={book.book.photo} borrowing_id={book.id} history={history} />,
             </div>,
-            {/* this.setState({items: [...this.state.items, item]}) */}
         );
         console.log("XDDDDDDDDDDDDD");
-        this.setState({items: newItems})
+        this.setState({items: this.state.items.concat(newItems)})
+
+        if (newItems.length < 1) {
+            this.setState({hasMore: false});
+        }
+
         console.log(newItems)
         // this.setState({items: newItems})
+
+    }
+
+    fetchData = () => {
+        this.setState({start: this.state.start + 1});
+        this.setState({end: this.state.end + 1});
+        console.log("NEW DATA FETCHED");
+        
+        console.log(this.state.start);
+        console.log(this.state.end);
+        console.log(this.state.hasMore)
+        
+        
+        this.getBooks();
 
     }
 
@@ -149,8 +174,6 @@ export class Home extends React.Component {
         }
         const { books, column, direction, items } = this.state;
 
-        // const xd = <BorrowingView author='xddd' title='xddd' photo='/assets/media/library_app/images/Harry%20Potter%20i%20Kamie%C5%84%20Filozoficzny-J.K.Rowling/def_book.jpg' />
-        // const items = [xd, xd, xd, xd, xd]
         return (
         <div className="base-container">
          <Sidebar as={Menu}  compact visible vertical width="thin" icon="labeled" >
@@ -224,8 +247,8 @@ export class Home extends React.Component {
                 
                     <InfiniteScroll
                         dataLength={items.length} //This is important field to render the next data
-                        next={'xd'}
-                        hasMore={true}
+                        next={this.fetchData}
+                        hasMore={this.state.hasMore}
                         loader={<h4>Loading...</h4>}
                         endMessage={
                             <p style={{textAlign: 'center'}}>
@@ -235,12 +258,13 @@ export class Home extends React.Component {
                         // below props only if you need pull down functionality
                         // refreshFunction={this.refresh}
                         // pullDownToRefresh
-                        pullDownToRefreshContent={
-                            <h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>
-                        }
-                        releaseToRefreshContent={
-                            <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
-                        }>
+                        // pullDownToRefreshContent={
+                        //     <h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>
+                        // }
+                        // releaseToRefreshContent={
+                        //     <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
+                        // }
+                        >
                         {items}
                     </InfiniteScroll>
                     <Route path="/home/borrowings/:borrwingId" component={BorrowingInfo} />
