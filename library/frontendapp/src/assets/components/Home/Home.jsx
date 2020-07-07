@@ -83,9 +83,7 @@ export class Home extends React.Component {
 
     componentDidMount() {
 
-        // const token = store.get('token');
-        // this.setState({token: token});   
-        
+
         const { history } = this.props;
         this.setState({history: history})
 
@@ -150,15 +148,12 @@ export class Home extends React.Component {
                 history={history} />
             </div>,
         );
-        console.log("XDDDDDDDDDDDDD");
         this.setState({items: this.state.items.concat(newItems)})
 
         if (newItems.length < end) {
             this.setState({hasMore: false});
         }
 
-        console.log(newItems)
-        // this.setState({items: newItems})
 
     }
 
@@ -191,7 +186,7 @@ export class Home extends React.Component {
                 Books
             </Menu.Item>
             </Link>
-            <Link to="/search">
+            <Link to="/search/all/">
             <Menu.Item link name="search" >
                 <Icon name="search" color="blue"/>
                 Search
@@ -210,47 +205,7 @@ export class Home extends React.Component {
                     </Icon.Group>
                     <Header.Content>Your Library</Header.Content>
                 </Header>
-                {/* <Table sortable selectable celled size='large' color="blue">
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell 
-                            sorted={column === 'book.book.title' ? direction : null}
-                            onClick={this.handleSort('book.book.title')}
-                            >
-                                Title
-                            </Table.HeaderCell>
-                            <Table.HeaderCell 
-                            sorted={column === 'book.book.author' ? direction : null}
-                            onClick={this.handleSort('book.book.author')}
-                            >
-                                Author
-                            </Table.HeaderCell>
-                            <Table.HeaderCell 
-                            sorted={column === 'book.returning_date' ? direction : null}
-                            onClick={this.handleSort('book.returning_date')}
-                            >
-                                Return Date
-                            </Table.HeaderCell>
-                            <Table.HeaderCell>Details</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {books.map((book, index) => 
-                         (
-                            <Table.Row  key={index}>
-                                
-                                <Table.Cell> {book.book.title}</Table.Cell>
-                                <Table.Cell >{book.book.author}</Table.Cell>
-                                <Table.Cell >{book.returning_date}</Table.Cell>
-                                <Table.Cell selectable textAlign='center'> <a href={`/home/borrowings/${book.id}`}>
-                                    <Icon name="info circle" color="blue"/>
-                                </a></Table.Cell>
-                            </Table.Row>
-                         ), 
-                        )}
-                    </Table.Body>
-                </Table> */}
-                
+               
                     <InfiniteScroll
                         dataLength={items.length} //This is important field to render the next data
                         next={this.fetchData}
@@ -261,15 +216,6 @@ export class Home extends React.Component {
                             <b>Yay! You have seen it all</b>
                             </p>
                         }
-                        // below props only if you need pull down functionality
-                        // refreshFunction={this.refresh}
-                        // pullDownToRefresh
-                        // pullDownToRefreshContent={
-                        //     <h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>
-                        // }
-                        // releaseToRefreshContent={
-                        //     <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
-                        // }
                         >
                         {items}
                     </InfiniteScroll>

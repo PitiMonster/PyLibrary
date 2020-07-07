@@ -5,10 +5,6 @@ def create_borrowing(book: Book, client: User):
         new_bor = Borrowing(book=book, client=client)
         book.available -= 1
         book.borrowed += 1
-        print(book.available)
-        print(book.borrowed)
-        print(client)
-        print(new_bor)
         book.save()
         new_bor.save()
         return True

@@ -27,7 +27,7 @@ function App() {
                 <Route path="/home" component={Home} />
                 <Route path="/login" component={Login} />
                 <Route path='/register' component={Register} />
-                <Route path='/search' component={Search} />
+                <Route path='/search/:searchType/:searchKey' component={Search} />
               </Switch>
             </Router>
       </div>

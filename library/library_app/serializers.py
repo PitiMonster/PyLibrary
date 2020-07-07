@@ -4,7 +4,7 @@ from .models import Book, Borrowing
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'release_date', 'description', 'category', 'photo']
+        fields = ['id', 'title', 'author', 'release_date', 'description', 'category', 'photo', 'available']
 
 class BorrowingSerializer(serializers.ModelSerializer):
     book = BookSerializer()

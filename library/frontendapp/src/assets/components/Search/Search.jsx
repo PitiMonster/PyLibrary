@@ -8,6 +8,7 @@ import { Table, Icon, Menu,  Sidebar, Header, Select, Form } from 'semantic-ui-r
 // internal imports
 import './Search.scss';
 import CONFIG from '../../config';
+import BookInfo from '../BookInfo/BookInfo';
 
 const options = [
     { key: 'all', text: 'All', value: 'all' },
@@ -61,16 +62,20 @@ export default class Search extends React.Component {
           direction: direction === 'ascending' ? 'descending' : 'ascending',
         })
     }
+    
+    loadKey(){
 
-
-    componentDidMount(){
-        const { history } = this.props;
-        this.setState({history: history});
-        this.handleSearch();
+    }
+    
+    componentWillMount(){
+        const { match : { params }, history } = this.props;
+        this.setState({history: history, key: params.searchKey, type: params.searchType},  this.handleSearch);
     }
 
-    handleSearch = event => {
-
+    
+    
+    handleSearch = () => {
+        console.log(this.state.key);
         const { type, key, start, end } = this.state;
 
         fetch(`${CONFIG.server}/library/search/${start}/${end}/${type}/${key}/`, {
@@ -95,19 +100,17 @@ export default class Search extends React.Component {
     }
 
     render() {
-
-        const { books, column, direction } = this.state;
-
+        const { books, column, direction, history, key, type} = this.state;
         return (
             <div className="base-container">
-                <Form onSubmit={this.handleSearch}>
+                <Form onSubmit={() => {history.push(`/search/${type}/${key}`); this.handleSearch()}}>
                     <Form.Input type="text"
                         icon={{name: 'search', color:'blue', circular: true, link: true }}>
                         <input placeholder='Search...'
-                                value={this.state.key}
+                                value={key}
                                 onChange={this.handleInputChange}
                                 />
-                        <Select options={options} defaultValue='all' onChange={(e, { value }) => {this.setState({type: value})}} />
+                        <Select options={options} defaultValue={type} onChange={(e, { value }) => {this.setState({type: value})}} />
 
                     </Form.Input>
                 </Form>
@@ -146,7 +149,7 @@ export default class Search extends React.Component {
                                     <Table.Cell> {book.title}</Table.Cell>
                                     <Table.Cell >{book.author}</Table.Cell>
                                     <Table.Cell >{book.category}</Table.Cell>
-                                    <Table.Cell selectable textAlign='center'> <a href={`/home/borrowings/${book.id}`}> {/* TODO change href to /home/books/ */}
+                                    <Table.Cell selectable textAlign='center'> <a href={`/search/${this.state.type}/${this.state.key}/book/${book.id}`}> {/* TODO change href to /home/books/ */}
                                         <Icon name="info circle" color="blue"/>
                                     </a></Table.Cell>
                                 </Table.Row>
@@ -155,7 +158,7 @@ export default class Search extends React.Component {
                         </Table.Body>
                     </Table>
                 </div>
-               
+               <Route path="/search/:searchType/:searchKey/book/:bookId" component={BookInfo} />
             </div>
             
         )
