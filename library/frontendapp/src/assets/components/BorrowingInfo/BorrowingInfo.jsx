@@ -30,7 +30,7 @@ export default class BorrowingInfo extends React.Component {
     componentDidMount() {
         const token = this.state.token;
         const { match : { params }, history } = this.props;
-        fetch(`${CONFIG.server}/library/borrowing/0/1/${params.borrwingId}/`, {
+        fetch(`${CONFIG.server}/library/borrowing/0/1/${params.borrowingId}/`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json',
                     'Authorization': 'Token ' + token},
@@ -72,7 +72,7 @@ export default class BorrowingInfo extends React.Component {
             })
         })
         .then( () => {
-            history.push('/home');
+            history.push('/borrowed');
         });
 
     }
@@ -94,7 +94,7 @@ export default class BorrowingInfo extends React.Component {
                 </Modal.Description>
               </Modal.Content>
               <Modal.Actions>
-          <Link to="/home"><Button>Close</Button></Link>
+          <Link to="/borrowed"><Button>Close</Button></Link>
           <Button color="blue" onClick={this.extendBorrowing}>Extend for one week</Button>
         </Modal.Actions>
             </Modal>

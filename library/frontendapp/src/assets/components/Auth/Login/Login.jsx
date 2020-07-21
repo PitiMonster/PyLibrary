@@ -39,7 +39,7 @@ export class Login extends React.Component {
                 store.set('token', data.token);
                 console.log(store.get('token'));
                 history.push({
-                    pathname: '/home',
+                    pathname: '/borrowed',
                     token: data.token,
                 }); // redirect to /home
         

@@ -15,19 +15,23 @@ import {
         Login, Register
     } from "./assets/components/Auth/Index";
 import Search from './assets/components/Search/Search'
+import Borrowed from './assets/components/Borrowed/Borrowed'
 
 
 function App() {
   // calculate stuff
   return (
     <div className="App">
-      <div className='App-body'>      
+      <div className='App-body'>   
             <Router>
               <Switch>
-                <Route path="/home" component={Home} />
+                
+                {/* <Route path='/search' component={Search} />
+                <Route path='/borrowed' component={Borrowed} /> */}
+
                 <Route path="/login" component={Login} />
-                <Route path='/register' component={Register} />
-                <Route path='/search' component={Search} />
+                <Route path='/register' component={Register} /> 
+                <Route path="/" component={Home} />
               </Switch>
             </Router>
       </div>

@@ -1,7 +1,7 @@
 // external imports
 import React from 'react';
 import _ from 'lodash';
-import { Redirect, Route, Link } from 'react-router-dom';
+import { Redirect, Route, Link, Switch } from 'react-router-dom';
 import { Table, Icon, Menu,  Sidebar, Header } from 'semantic-ui-react'
 import store from 'store';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -12,6 +12,8 @@ import isLoggedIn from '../../helpers/is_logged_in';
 import CONFIG from '../../config';
 import BorrowingInfo from '../BorrowingInfo/BorrowingInfo';
 import BorrowingView from '../../views/BorrowingView/borrowing';
+import Search from '../Search/Search'
+import Borrowed from '../Borrowed/Borrowed'
 
 
 export class Home extends React.Component {
@@ -30,146 +32,146 @@ export class Home extends React.Component {
             hasMore: true,
         }
     }
-    compareBy(key) {
-        if (key === 'book.book.title')
-            return function (a, b) {
+    // compareBy(key) {
+    //     if (key === 'book.book.title')
+    //         return function (a, b) {
 
-            if (a.book.title.toLowerCase()<b.book.title.toLowerCase()) return -1;
-            if (a.book.title.toLowerCase()>b.book.title.toLowerCase()) return 1;
-            return 0;
-            }
-        else if (key === 'book.book.author')
-            return function (a, b) {
+    //         if (a.book.title.toLowerCase()<b.book.title.toLowerCase()) return -1;
+    //         if (a.book.title.toLowerCase()>b.book.title.toLowerCase()) return 1;
+    //         return 0;
+    //         }
+    //     else if (key === 'book.book.author')
+    //         return function (a, b) {
 
-                if (a.book.author.toLowerCase()<b.book.author.toLowerCase()) return -1;
-                if (a.book.author.toLowerCase()>b.book.author.toLowerCase()) return 1;
-                return 0;
-            }
-        else return function(a, b) {
-            if (""+a[key]<(""+b[key])) return -1;
-            if (""+a[key]>(""+b[key])) return 1;
-            return 0;
-        }
-        ;}
+    //             if (a.book.author.toLowerCase()<b.book.author.toLowerCase()) return -1;
+    //             if (a.book.author.toLowerCase()>b.book.author.toLowerCase()) return 1;
+    //             return 0;
+    //         }
+    //     else return function(a, b) {
+    //         if (""+a[key]<(""+b[key])) return -1;
+    //         if (""+a[key]>(""+b[key])) return 1;
+    //         return 0;
+    //     }
+    //     ;}
         
 
-    handleSort = (clickedColumn) => () => {
-        const { column, books, direction } = this.state
-        if (column !== clickedColumn) {
-        let arrayCopy = books;
-        arrayCopy.sort(this.compareBy(clickedColumn));
-          this.setState({
-            column: clickedColumn,
-            books: arrayCopy,
-            direction: 'ascending',
-          });
+    // handleSort = (clickedColumn) => () => {
+    //     const { column, books, direction } = this.state
+    //     if (column !== clickedColumn) {
+    //     let arrayCopy = books;
+    //     arrayCopy.sort(this.compareBy(clickedColumn));
+    //       this.setState({
+    //         column: clickedColumn,
+    //         books: arrayCopy,
+    //         direction: 'ascending',
+    //       });
     
-          return
-        }
+    //       return
+    //     }
     
-        this.setState({
-            books: books.reverse(),
-          direction: direction === 'ascending' ? 'descending' : 'ascending',
-        })
-      }
+    //     this.setState({
+    //         books: books.reverse(),
+    //       direction: direction === 'ascending' ? 'descending' : 'ascending',
+    //     })
+    //   }
 
 
-    componentWillReceiveProps (props) {
-        const { history } = this.props;
-        this.setState({history: history})
-        this.getBooks();
-    }
+    // componentWillReceiveProps (props) {
+    //     const { history } = this.props;
+    //     this.setState({history: history})
+    //     // this.getBooks();
+    // }
 
 
-    componentDidMount() {
+    // componentDidMount() {
 
 
-        const { history } = this.props;
-        this.setState({history: history})
+    //     const { history } = this.props;
+    //     this.setState({history: history})
 
-        this.getBooks(); 
-      }
+    //     // this.getBooks(); 
+    //   }
 
-    getBooks = () => {
+    // getBooks = () => {
 
-        const { token } = this.state;
+    //     const { token } = this.state;
         
-        const { start, end } = this.state;
+    //     const { start, end } = this.state;
         
-        fetch(CONFIG.server+`/library/borrowing/${start}/${end}/all/`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json',
-                        'Authorization': 'Token ' + token},
-        })
-        .then(data => {
-            if(!data.ok) { throw data } // if got any exception from server 
-            return data.json()   
-        })
-        .then( data => {
-            console.log(data);
+    //     fetch(CONFIG.server+`/library/borrowing/${start}/${end}/all/`, {
+    //         method: 'GET',
+    //         headers: {'Content-Type': 'application/json',
+    //                     'Authorization': 'Token ' + token},
+    //     })
+    //     .then(data => {
+    //         if(!data.ok) { throw data } // if got any exception from server 
+    //         return data.json()   
+    //     })
+    //     .then( data => {
+    //         console.log(data);
             
-            this.setState({books: this.state.books.concat(data.content)})
-            console.log(data.content);
-            console.log(this.state.books);
-            this.createItems();
+    //         this.setState({books: this.state.books.concat(data.content)})
+    //         console.log(data.content);
+    //         console.log(this.state.books);
+    //         this.createItems();
             
             
 
-        })
-        .catch( error => console.log(error))
-    }
-    handleLogout = () => {  
-        store.remove('loggedIn');
-        store.remove('token');
-        this.state.history.push('/login');
-    };
+    //     })
+    //     .catch( error => console.log(error))
+    // }
+    // handleLogout = () => {  
+    //     store.remove('loggedIn');
+    //     store.remove('token');
+    //     this.state.history.push('/login');
+    // };
 
-    handleSearch = () => {
-        this.state.history.push('/search');
-    }
+    // handleSearch = () => {
+    //     this.state.history.push('/search');
+    // }
 
-    setVisible = (visible) => {
-        this.setState({visible : visible})
-    }
+    // setVisible = (visible) => {
+    //     this.setState({visible : visible})
+    // }
 
-    createItems = () => {
-        const { books, history, start, end } = this.state;
+    // createItems = () => {
+    //     const { books, history, start, end } = this.state;
 
-        const newBooks = books.slice(start, end);
+    //     const newBooks = books.slice(start, end);
 
-        const newItems = newBooks.map((book, index) =>
-            <div key={index+start}>
-                <BorrowingView 
-                author={book.book.author} 
-                title={book.book.title} 
-                photo={book.book.photo} 
-                borrowing_id={book.id}
-                return_date = {book.returning_date}  
-                history={history} />
-            </div>,
-        );
-        this.setState({items: this.state.items.concat(newItems)})
+    //     const newItems = newBooks.map((book, index) =>
+    //         <div key={index+start}>
+    //             <BorrowingView 
+    //             author={book.book.author} 
+    //             title={book.book.title} 
+    //             photo={book.book.photo} 
+    //             borrowing_id={book.id}
+    //             return_date = {book.returning_date}  
+    //             history={history} />
+    //         </div>,
+    //     );
+    //     this.setState({items: this.state.items.concat(newItems)})
 
-        if (newItems.length < end) {
-            this.setState({hasMore: false});
-        }
+    //     if (newItems.length < end) {
+    //         this.setState({hasMore: false});
+    //     }
 
 
-    }
+    // }
 
-    fetchData = () => {
-        this.setState({start: this.state.start + 1});
-        this.setState({end: this.state.end + 1});
-        console.log("NEW DATA FETCHED");
+    // fetchData = () => {
+    //     this.setState({start: this.state.start + 1});
+    //     this.setState({end: this.state.end + 1});
+    //     console.log("NEW DATA FETCHED");
         
-        console.log(this.state.start);
-        console.log(this.state.end);
-        console.log(this.state.hasMore)
+    //     console.log(this.state.start);
+    //     console.log(this.state.end);
+    //     console.log(this.state.hasMore)
         
         
-        this.getBooks();
+    //     this.getBooks();
 
-    }
+    // }
 
     render() {
         if(!isLoggedIn()) {
@@ -178,28 +180,34 @@ export class Home extends React.Component {
         const { books, column, direction, items } = this.state;
 
         return (
-        <div className="base-container">
+            <div className="base-container">
 
-         <Menu size='massive' compact icon="labeled" >
-            <Link to="/home"> 
-            <Menu.Item link name="book">
-                <Icon name="book" color="blue"/>
-                Books
-            </Menu.Item>
-            </Link>
-            <Link to="/search?type=all&key=">
-            <Menu.Item link name="search" >
-                <Icon name="search" color="blue"/>
-                Search
-            </Menu.Item>
-            </Link>
+                <Sidebar as={Menu} width='thin' vertical visible animation='push' icon="labeled" >
+                    <Link to="/borrowed"> 
+                        <Menu.Item link name="book">
+                            <Icon name="book" color="blue" size='huge'/>
+                            Books
+                        </Menu.Item>
+                    </Link>
+                    <Link to="/search?type=all&key=">
+                        <Menu.Item link name="search" >
+                            <Icon name="search" color="blue" size='big'/>
+                            Search
+                        </Menu.Item>
+                    </Link>
 
-            <Menu.Item name="logout" onClick={this.handleLogout}>
-            <Icon name="power" color="blue" />
-            Logout
-            </Menu.Item>
-        </Menu>
-            <div className="table-container">
+                    <Menu.Item as='a' name="logout" onClick={this.handleLogout}>
+                        <Icon name="power" color="blue" size='big'/>
+                        Logout
+                    </Menu.Item>
+                </Sidebar>
+
+                <Switch>
+                    <Route path='/search' component={Search} />
+                    <Route path='/borrowed' component={Borrowed} />
+                </Switch>
+
+            {/* <div className="table-container">
                 <Header as='h1' icon textAlign='center'>
                     <Icon.Group size='big'>
                         <Icon size='big' name='desktop' color='blue' circular  />
@@ -221,7 +229,7 @@ export class Home extends React.Component {
                         {items}
                     </InfiniteScroll>
                     <Route path="/home/borrowings/:borrwingId" component={BorrowingInfo} />
-                </div>
+                </div> */}
             </div>
         )};
 }

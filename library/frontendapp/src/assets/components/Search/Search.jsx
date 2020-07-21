@@ -99,7 +99,7 @@ export default class Search extends React.Component {
     render() {
         const { books, column, direction, history, key, type} = this.state;
         return (
-            <div className="base-container">
+            <div className="base-search-container">
                 <Form onSubmit={() => {history.push(`/search?type=${type}&key=${key}`); this.handleSearch()}}>
                     <Form.Input type="text"
                         icon={{name: 'search', color:'blue', circular: true, link: true }}>

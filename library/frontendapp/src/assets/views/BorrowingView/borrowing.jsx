@@ -9,7 +9,7 @@ export default function BorrowingView({author, title, photo, borrowing_id, retur
     
     return(
         
-        <div className="borrowing-view" onClick={() => history.push(`/home/borrowings/${borrowing_id}`)}>
+        <div className="borrowing-view" onClick={() => history.push(`/borrowed/borrowings/${borrowing_id}`)}>
 
             <img src={`${CONFIG.server}${photo}`} alt="book image"/>
             <div class="overlay">
