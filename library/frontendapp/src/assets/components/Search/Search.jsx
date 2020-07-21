@@ -63,13 +63,10 @@ export default class Search extends React.Component {
         })
     }
     
-    loadKey(){
-
-    }
-    
     componentWillMount(){
-        const { match : { params }, history } = this.props;
-        this.setState({history: history, key: params.searchKey, type: params.searchType},  this.handleSearch);
+        const query = new URLSearchParams(this.props.location.search);
+        const { history } = this.props;
+        this.setState({history: history, key: query.get('key'), type: query.get('type')},  this.handleSearch);
     }
 
     
@@ -103,7 +100,7 @@ export default class Search extends React.Component {
         const { books, column, direction, history, key, type} = this.state;
         return (
             <div className="base-container">
-                <Form onSubmit={() => {history.push(`/search/${type}/${key}`); this.handleSearch()}}>
+                <Form onSubmit={() => {history.push(`/search?type=${type}&key=${key}`); this.handleSearch()}}>
                     <Form.Input type="text"
                         icon={{name: 'search', color:'blue', circular: true, link: true }}>
                         <input placeholder='Search...'
@@ -149,7 +146,7 @@ export default class Search extends React.Component {
                                     <Table.Cell> {book.title}</Table.Cell>
                                     <Table.Cell >{book.author}</Table.Cell>
                                     <Table.Cell >{book.category}</Table.Cell>
-                                    <Table.Cell selectable textAlign='center'> <a href={`/search/${this.state.type}/${this.state.key}/book/${book.id}`}> {/* TODO change href to /home/books/ */}
+                                    <Table.Cell selectable textAlign='center'> <a href={`/search/book/${book.id}`}> {/* TODO change href to /home/books/ */}
                                         <Icon name="info circle" color="blue"/>
                                     </a></Table.Cell>
                                 </Table.Row>
@@ -158,7 +155,7 @@ export default class Search extends React.Component {
                         </Table.Body>
                     </Table>
                 </div>
-               <Route path="/search/:searchType/:searchKey/book/:bookId" component={BookInfo} />
+               <Route path="/search/book/:bookId" component={BookInfo} />
             </div>
             
         )

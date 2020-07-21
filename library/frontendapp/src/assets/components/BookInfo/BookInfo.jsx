@@ -62,7 +62,7 @@ export default class BorrowingInfo extends React.Component {
     render() {
         const { book, history } = this.state; 
         return (
-            <Modal open >
+            <Modal open dimmer='blurring' >
 
               <Modal.Header>{book.title}</Modal.Header>
               <Modal.Content image>

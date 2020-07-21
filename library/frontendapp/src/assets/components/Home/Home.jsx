@@ -179,6 +179,7 @@ export class Home extends React.Component {
 
         return (
         <div className="base-container">
+
          <Menu size='massive' compact icon="labeled" >
             <Link to="/home"> 
             <Menu.Item link name="book">
@@ -186,7 +187,7 @@ export class Home extends React.Component {
                 Books
             </Menu.Item>
             </Link>
-            <Link to="/search/all/">
+            <Link to="/search?type=all&key=">
             <Menu.Item link name="search" >
                 <Icon name="search" color="blue"/>
                 Search
@@ -201,7 +202,7 @@ export class Home extends React.Component {
             <div className="table-container">
                 <Header as='h1' icon textAlign='center'>
                     <Icon.Group size='big'>
-                        <Icon size='big' name='desktop' color='blue' circular loading />
+                        <Icon size='big' name='desktop' color='blue' circular  />
                     </Icon.Group>
                     <Header.Content>Your Library</Header.Content>
                 </Header>
@@ -223,5 +224,4 @@ export class Home extends React.Component {
                 </div>
             </div>
         )};
-
 }
